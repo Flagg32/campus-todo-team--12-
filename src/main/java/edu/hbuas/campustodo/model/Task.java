@@ -6,6 +6,16 @@ import java.util.Objects;
  * 校园待办任务。
  */
 public class Task {
+    private Priority priority = Priority.MEDIUM;
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     private final long id;
     private final String title;
     private boolean completed;
