@@ -4,9 +4,12 @@ import edu.hbuas.campustodo.model.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import edu.hbuas.campustodo.model.Priority;
 
 import java.util.List;
@@ -33,8 +36,38 @@ class TaskServiceTest {
                 () -> service.addTask("   "));
     }
     @Test
+    void shouldCompleteTask() {
+        TaskService service = new TaskService();
+        var task = service.addTask("写实验报告");
+
+        service.completeTask(task.getId());
+
+        assertTrue(task.isCompleted());
+    }
+
+    @Test
+    void shouldRejectUnknownTaskId() {
+        TaskService service = new TaskService();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.completeTask(999L));
+    }
+
+    @Test
+    void shouldRejectCompletingCompletedTask() {
+        TaskService service = new TaskService();
+        var task = service.addTask("重复完成检查");
+
+        service.completeTask(task.getId());
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.completeTask(task.getId()));
+    }
+
+    @Test
     @DisplayName("根据优先级筛选任务，只返回匹配优先级的任务")
     void testFilterByPriority() {
+        TaskService service = new TaskService();
         Task highTask1 = service.addTask("写高优先级作业");
         highTask1.setPriority(Priority.HIGH);
 
