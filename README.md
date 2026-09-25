@@ -65,3 +65,14 @@ git push origin v0.1.0
 - 作者不能批准自己的 Pull Request；评审意见处理完毕且 CI 通过后再合并。
 - 不提交 `.idea/`、`target/`、访问令牌、账号密码或个人隐私数据。
 - 禁止使用 `git push --force` 修改共享的 `main` 分支。
+
+## 协作流程
+
+1. 从 main 拉取最新代码，创建 `feature/<编号>-<简述>` 分支。
+2. 先写测试，再写实现，分条提交。
+3. 推送分支后发起 Pull Request，正文填写 PR 模板并关联 Issue。
+4. 至少一名成员评审通过、CI 检查全绿后合并。
+
+## 自动化检查
+
+每次推送到 main 或针对 main 发起 Pull Request 时，GitHub Actions 会自动执行 `mvn -B verify`，编译并运行全部单元测试。检查名称为 `build`，是分支保护的必需检查项。
